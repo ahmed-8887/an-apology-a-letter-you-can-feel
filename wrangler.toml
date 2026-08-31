@@ -2,6 +2,12 @@ name = "apology-worker"
 main = "cloudflare/src/index.js"
 compatibility_date = "2024-09-01"
 
+# Cloudflare Workers Static Assets (serves built React SPA)
+[assets]
+directory = "./frontend/dist"
+binding = "ASSETS"
+not_found_handling = "single-page-application"
+
 # Private R2 Bucket Binding (NO public URLs or R2.dev access)
 [[r2_buckets]]
 binding = "PRIVATE_PHOTOS_BUCKET"
