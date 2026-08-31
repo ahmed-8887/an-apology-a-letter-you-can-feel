@@ -1,0 +1,46 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Production Builds
+dist/
+build/
+.dist/
+
+# Environment variables & secrets (CRITICAL FOR SECURITY)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.pem
+*.key
+credentials.json
+app-password.txt
+
+# Private Media & Personal Photos (CRITICAL: Must NEVER be committed to Git)
+private_media/
+private-assets/
+private-photos/
+*.private.*
+frontend/src/assets/private/
+frontend/public/private/
+backend/private-assets/
+*.heic
+*.raw
+
+# Cloudflare Wrangler & D1 local state
+.wrangler/
+.mf/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# OS & Editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

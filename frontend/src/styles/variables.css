@@ -1,0 +1,27 @@
+:root {
+  --bg-primary: #090909;
+  --bg-surface: #121111;
+  --bg-card: rgba(22, 20, 20, 0.75);
+  --bg-card-hover: rgba(30, 26, 26, 0.85);
+
+  --text-primary: #F5F2EE;
+  --text-secondary: #B8A8A0;
+  --text-muted: #7A6F69;
+
+  --accent-burgundy: #6F2638;
+  --accent-burgundy-glow: rgba(111, 38, 56, 0.35);
+  --accent-warm: #C6A77B;
+  --accent-warm-soft: rgba(198, 167, 123, 0.15);
+  --border-subtle: rgba(198, 167, 123, 0.18);
+  --border-card: rgba(255, 255, 255, 0.08);
+
+  --font-serif: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-display: 'Playfair Display', 'Cormorant Garamond', Georgia, serif;
+
+  --max-width-content: 720px;
+  --max-width-letter: 680px;
+
+  --transition-smooth: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-slow: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
