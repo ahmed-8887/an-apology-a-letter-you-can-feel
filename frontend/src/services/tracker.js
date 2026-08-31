@@ -74,15 +74,48 @@ class VisitorTracker {
     }, 25000);
   }
 
-  async submitMessage(messageText) {
+  trackEvent(eventName, metadata = {}) {
+    if (!this.initialized) this.initSession();
+    this.journeyLog.push({
+      event: eventName,
+      title: eventName,
+      time: new Date().toISOString(),
+      metadata
+    });
+
+    fetch('/api/track/event', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        sessionId: this.sessionId,
+        eventName,
+        metadata,
+        timestamp: new Date().toISOString()
+      })
+    }).catch(() => {});
+  }
+
+  async submitMessage({ textMessage, voiceBlob, voiceDuration }) {
     if (!this.initialized) this.initSession();
     try {
+      let voiceAudioBase64 = null;
+      if (voiceBlob) {
+        voiceAudioBase64 = await new Promise((resolve) => {
+          const reader = new FileReader();
+          reader.onloadend = () => resolve(reader.result);
+          reader.readAsDataURL(voiceBlob);
+        });
+      }
+
       const res = await fetch('/api/send-message', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           sessionId: this.sessionId,
-          message: messageText,
+          textMessage: textMessage || null,
+          message: textMessage || null,
+          voiceAudioBase64,
+          voiceDuration: voiceDuration || null,
           timestamp: new Date().toISOString()
         })
       });
@@ -91,6 +124,34 @@ class VisitorTracker {
       return false;
     }
   }
+
+  finalizeSession(reason = 'client_inactivity') {
+    if (!this.sessionId || this.finalized) return;
+    this.finalized = true;
+
+    try {
+      if (this.heartbeatInterval) clearInterval(this.heartbeatInterval);
+
+      const payload = JSON.stringify({
+        sessionId: this.sessionId,
+        reason,
+        timestamp: new Date().toISOString()
+      });
+
+      if (navigator.sendBeacon) {
+        const blob = new Blob([payload], { type: 'application/json' });
+        navigator.sendBeacon('/api/track/end', blob);
+      } else {
+        fetch('/api/track/end', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: payload,
+          keepalive: true
+        }).catch(() => {});
+      }
+    } catch (e) {}
+  }
 }
 
 export const tracker = new VisitorTracker();
+

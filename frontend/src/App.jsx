@@ -13,6 +13,7 @@ import WhatImActuallySorryForSection from './sections/08_WhatImActuallySorryForS
 import TheMainApologySection from './sections/09_TheMainApologySection';
 import IDontExpectAnythingSection from './sections/10_IDontExpectAnythingSection';
 import FinalLetterSection from './sections/11_FinalLetterSection';
+import YourMessageSection from './sections/YourMessageSection';
 import FinalChoiceSection from './sections/12_FinalChoiceSection';
 import EndExperienceSection from './sections/13_EndExperienceSection';
 
@@ -63,9 +64,11 @@ export default function App() {
       <Route path="/11" element={<FinalLetterSection />} />
       <Route path="/final-letter" element={<FinalLetterSection />} />
 
+      <Route path="/your-message" element={<YourMessageSection />} />
+      <Route path="/message" element={<YourMessageSection />} />
+
       <Route path="/12" element={<FinalChoiceSection />} />
       <Route path="/final-choice" element={<FinalChoiceSection />} />
-      <Route path="/message" element={<FinalChoiceSection />} />
 
       <Route path="/13" element={<EndExperienceSection />} />
       <Route path="/end-experience" element={<EndExperienceSection />} />

@@ -10,7 +10,7 @@ export default function FinalLetterSection() {
   const { finalLetter } = APOLOGY_CONFIG;
 
   return (
-    <CinematicLayout currentStep={11} totalSteps={13} prevRoute="/10" nextRoute="/12">
+    <CinematicLayout currentStep={11} totalSteps={13} prevRoute="/10" nextRoute="/your-message">
       <div style={{ width: '100%', maxWidth: '720px', textAlign: 'center', padding: '0 20px' }}>
         {finalLetter.openingNote && (
           <p 
@@ -51,7 +51,7 @@ export default function FinalLetterSection() {
         )}
 
         <div className="animate-fade-in animate-delay-3">
-          <Button onClick={() => navigate('/12')}>
+          <Button onClick={() => navigate('/your-message')}>
             CONTINUE →
           </Button>
         </div>

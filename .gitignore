@@ -23,6 +23,10 @@ app-password.txt
 private_media/
 private-assets/
 private-photos/
+private-recordings/
+.persistent-storage/
+.netlify/
+*.webm
 *.private.*
 frontend/src/assets/private/
 frontend/public/private/

@@ -1,11 +1,11 @@
 /**
  * Centralized Private Photo Configuration
-- * ARCHITECTURE & SECURITY NOTICE:
-- * - The GitHub repository is public, so personal photo binaries must NEVER be committed to Git.
- * - This file contains only structured metadata and private R2 object keys (references).
- * - Real personal photos will be uploaded directly to the private Cloudflare R2 bucket.
- * - The frontend retrieves images securely through the Worker proxy endpoint: /api/photo/:key
- * - The R2 bucket itself remains 100% private (no public r2.dev URLs).
+ * ARCHITECTURE & SECURITY NOTICE:
+ * - The GitHub repository is public, so personal photo binaries must NEVER be committed to Git.
+ * - This file contains only structured metadata and private photo keys (references).
+ * - Real personal photos will be uploaded directly to private storage outside Git.
+ * - The frontend retrieves images securely through the Netlify functions backend proxy endpoint: /api/photo/:key
+ * - The photo storage remains 100% private.
  */
 
 export const PHOTO_MEMORIES_CONFIG = [

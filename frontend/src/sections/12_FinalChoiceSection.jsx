@@ -10,7 +10,7 @@ export default function FinalChoiceSection() {
   const [selectedOption, setSelectedOption] = useState(null);
 
   return (
-    <CinematicLayout currentStep={12} totalSteps={13} prevRoute="/11" nextRoute="/13">
+    <CinematicLayout currentStep={12} totalSteps={13} prevRoute="/your-message" nextRoute="/13">
       <div style={{ width: '100%', maxWidth: '620px', textAlign: 'center', padding: '0 20px' }}>
         {/* Title */}
         <h2 className="animate-fade-in"

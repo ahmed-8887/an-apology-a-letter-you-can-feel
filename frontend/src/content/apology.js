@@ -176,6 +176,22 @@ export const APOLOGY_CONFIG = {
     transitionPrompt: "I've said what I needed to say. Whatever happens next is entirely your choice."
   },
 
+  // 11.5 Your Message — Voice & Text Reflection
+  yourMessage: {
+    title: "There’s Something I Want to Hear From You",
+    subtitle: "If there is anything you want to say, share how you felt, or leave a thought for me — you can write a message or record your voice below. Take your time, with zero pressure.",
+    textPlaceholder: "Write anything you want to say...",
+    recordButtonText: "Record a Voice Message",
+    recordingText: "Recording audio...",
+    stopButtonText: "Stop Recording",
+    deleteButtonText: "Delete Recording",
+    recordAgainText: "Record Again",
+    submitButtonText: "SEND MESSAGE",
+    successMessage: "Thank you. Your message has been safely saved.",
+    micErrorText: "Your microphone isn't available right now. You can still write your message instead.",
+    continueWithoutMessageText: "CONTINUE →"
+  },
+
   // 12. Final Choice — Respectful Autonomy
   finalChoice: {
     title: "Whatever you feel right now is okay.",
