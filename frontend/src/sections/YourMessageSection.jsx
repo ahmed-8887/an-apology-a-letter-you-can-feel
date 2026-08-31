@@ -1,4 +1,4 @@
-import React, { state, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import CinematicLayout from '../components/CinematicLayout';
 import Button from '../components/Button';
@@ -7,7 +7,7 @@ import { tracker } from '../services/tracker';
 
 export default function YourMessageSection() {
   const navigate = useNavigate();
-  const config = APOLOGY_CONFIG.yourMessage || {
+  const config = (APOLOGY_CONFIG && APOLOGY_CONFIG.yourMessage) || {
     title: "There’s Something I Want to Hear From You",
     subtitle: "If there is anything you want to say, share how you felt, or leave a thought for me — you can write a message or record your voice below. Take your time, with zero pressure.",
     textPlaceholder: "Write anything you want to say...",
@@ -22,21 +22,21 @@ export default function YourMessageSection() {
     continueWithoutMessageText: "CONTINUE →"
   };
 
-  const [textMessage, setTextMessage] = state('');
-  const [hasStartedTyping, setHasStartedTyping] = state(false);
+  const [textMessage, setTextMessage] = useState('');
+  const [hasStartedTyping, setHasStartedTyping] = useState(false);
 
   // Voice recording state
-  const [isRecording, setIsRecording] = state(false);
-  const [recordingSeconds, setRecordingSeconds] = state(0);
-  const [audioObob, setAudioBlob] = state(null);
-  const [audioUrl, setAudioUrl] = state(null);
-  const [voiceDurationFormatted, setVoiceDurationFormatted] = state('');
-  const [micError, setMicError] = state(null);
+  const [isRecording, setIsRecording] = useState(false);
+  const [recordingSeconds, setRecordingSeconds] = useState(0);
+  const [audioBlob, setAudioBlob] = useState(null);
+  const [audioUrl, setAudioUrl] = useState(null);
+  const [voiceDurationFormatted, setVoiceDurationFormatted] = useState('');
+  const [micError, setMicError] = useState(null);
 
   // Submission state
-  const [submitting, setSubmitting] = state(false);
-  const [submitted, setSubmitted] = state(false);
-  const [submitError, setSubmitError] = state('');
+  const [submitting, setSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [submitError, setSubmitError] = useState('');
 
   const mediaRecorderRef = useRef(null);
   const audioChunksRef = useRef([]);
@@ -92,16 +92,18 @@ export default function YourMessageSection() {
       mediaRecorder.onstop = () => {
         const mimeType = mediaRecorder.mimeType || 'audio/webm';
         const blob = new Blob(audioChunksRef.current, { type: mimeType });
-        setAudioObob(blob);
+        setAudioBlob(blob);
         const url = URL.createObjectURL(blob);
         setAudioUrl(url);
-        stream.getTracks().forEach(t => t.stop());
+        if (streamRef.current) {
+          streamRef.current.getTracks().forEach(t => t.stop());
+        }
       };
 
       mediaRecorder.start();
       setIsRecording(true);
       setRecordingSeconds(0);
-      tracker.trackEvent('voice_recording_started');
+      try { tracker.trackEvent('voice_recording_started'); } catch (e) {}
 
       timerRef.current = setInterval(() => {
         setRecordingSeconds((prev) => prev + 1);
@@ -119,17 +121,17 @@ export default function YourMessageSection() {
       if (timerRef.current) clearInterval(timerRef.current);
       const durationStr = formatTimer(recordingSeconds);
       setVoiceDurationFormatted(durationStr);
-      tracker.trackEvent('voice_recording_stopped', { durationSeconds: recordingSeconds, duration: durationStr });
+      try { tracker.trackEvent('voice_recording_stopped', { durationSeconds: recordingSeconds, duration: durationStr }); } catch (e) {}
     }
   };
 
   const deleteVoiceRecording = () => {
     if (audioUrl) URL.revokeObjectURL(audioUrl);
-    setAudioObob(null);
+    setAudioBlob(null);
     setAudioUrl(null);
     setRecordingSeconds(0);
     setVoiceDurationFormatted('');
-    tracker.trackEvent('voice_recording_deleted');
+    try { tracker.trackEvent('voice_recording_deleted'); } catch (e) {}
   };
 
   const handleSubmit = async (e) => {
@@ -151,11 +153,13 @@ export default function YourMessageSection() {
 
       if (ok) {
         setSubmitted(true);
-        tracker.trackEvent('message_submission_completed', {
-          hasText: Boolean(textMessage.trim()),
-          hasVoice: Boolean(audioObob),
-          voiceDuration: voiceDurationFormatted
-        });
+        try {
+          tracker.trackEvent('message_submission_completed', {
+            hasText: Boolean(textMessage.trim()),
+            hasVoice: Boolean(audioBlob),
+            voiceDuration: voiceDurationFormatted
+          });
+        } catch (e) {}
       } else {
         setSubmitError('Unable to send message right now. You can still continue to the next step.');
       }
@@ -306,7 +310,7 @@ export default function YourMessageSection() {
                   onMouseEnter={(e) => e.currentTarget.style.borderColor = '#C6A77B'}
                   onMouseLeave={(e) => e.currentTarget.style.borderColor = 'rgba(198, 167, 123, 0.3)'}
                 >
-                  🎉 {config.recordButtonText}
+                  🎙 {config.recordButtonText}
                 </button>
               )}
 
